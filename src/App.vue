@@ -8,7 +8,7 @@
 <style lang="scss">
 $font-stack: Avenir, Helvetica, Arial, sans-serif;
 $dark-text: #373737;
-$standard-text: #626161; 
+$standard-text: #626161;
 
 #app {
   font-family: $font-stack;
