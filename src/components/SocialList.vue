@@ -8,6 +8,7 @@
 import Card from '@/components/Card.vue'
 import TwitterData from '@/assets/twitterData'
 import axios from 'axios' 
+import moment from 'moment'
 
 export default {
   name: 'SocialList',
@@ -48,7 +49,7 @@ export default {
 
             socialItemObj.title = item.snippet.title
             socialItemObj.description = item.snippet.description
-            socialItemObj.published = item.snippet.publishedAt
+            socialItemObj.published = moment(item.snippet.publishedAt).format('DD/MM/YYYY HH:mm:ss')
             socialItemObj.source = "youTube"
             //TODO: Add Thumb Info
 
@@ -63,15 +64,52 @@ export default {
         TwitterData.forEach(twitterItem => {
           let socialItemObj = {}
 
-            socialItemObj.title = ''
-            socialItemObj.description = twitterItem.text
-            socialItemObj.published = twitterItem.created_at
-            socialItemObj.source = "twitter"
-            //TODO: Add Thumb Info
+          socialItemObj.title = ''
+          socialItemObj.description = twitterItem.text
+          socialItemObj.published = moment(twitterItem.created_at, 'ddd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YYYY HH:mm:ss')
+          socialItemObj.source = "twitter"
+          //TODO: Add Thumb Info
 
-            this.postArray.push(socialItemObj)
+          this.postArray.push(socialItemObj)
         })
       
+        this.postArray.sort((a,b) => {
+
+            var dateA, dateB
+
+            switch(a.source){
+              case 'twitter':
+                dateA = moment(a.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
+              break;
+              case 'youTube':
+                dateA = moment(a.published)
+              break;
+              default:
+                dateA = a.published
+            }
+
+            switch(b.source){
+              case 'twitter':
+                dateB = moment(b.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
+              break;
+              case 'youTube':
+                dateB = moment(b.published)
+              break;
+              default:
+                dateB = b.published
+            }
+
+            if(dateA < dateB){
+              return -1;
+            }
+
+            if (dateA > dateB) {
+              return 1;
+            }
+
+            return 0;
+        })
+
       /*
       Benching this for now, this should be called to refresh the Bearer Token incase it has been invalidadted and the timeline called with the reurned token, This works in Postman 
       but I get a CORS preflight from the browser. I'm sure this is fixable but for the sake of time I'm moving on.
