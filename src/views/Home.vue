@@ -1,6 +1,6 @@
 <template>
   <div class="list-holder">
-    
+    <social-list></social-list>
   </div>
 </template>
 

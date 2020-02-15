@@ -6,12 +6,20 @@
 </template>
 
 <style lang="scss">
+$font-stack: Avenir, Helvetica, Arial, sans-serif;
+$dark-text: #373737;
+$standard-text: #626161; 
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: $font-stack;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $standard-text;
+}
+
+h1{
+  color: $dark-text;
 }
 
 </style>

@@ -1,6 +1,14 @@
 <template>
   <div class="card">
-    
+    {{cardData.title}}
+    <br>
+    {{cardData.description}}
+    <br>
+    {{cardData.published}}
+    <br>
+    {{cardData.source}}
+    <br>
+    <br>
   </div>
 </template>
 
