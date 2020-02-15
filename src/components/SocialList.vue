@@ -46,13 +46,17 @@ export default {
            
           itemArray.forEach(item => {
             let socialItemObj = {}
+            let postingDate = moment(item.snippet.publishedAt)
+            let today = moment();
+            let duration = moment.duration(today.diff(postingDate))
             
             socialItemObj.id = item.id
             socialItemObj.title = item.snippet.title
             socialItemObj.description = item.snippet.description
-            socialItemObj.published = moment(item.snippet.publishedAt).format('DD/MM/YYYY HH:mm:ss')
+            socialItemObj.published = postingDate.format('DD/MM/YYYY HH:mm:ss')
+            socialItemObj.postAge = Math.round(duration.asDays()) 
             socialItemObj.source = "youTube"
-            //TODO: Add Thumb Info
+            socialItemObj.image = item.snippet.thumbnails.medium.url
 
             this.postArray.push(socialItemObj)
           })
@@ -64,13 +68,24 @@ export default {
 
         TwitterData.forEach(twitterItem => {
           let socialItemObj = {}
+
+          let postingDate = moment(twitterItem.created_at, 'ddd MMM DD HH:mm:ss ZZ YYYY')
+          let today = moment();
+          let duration = moment.duration(today.diff(postingDate))
           
-          socialItemObj.id = twiterItem.id
+          socialItemObj.id = twitterItem.id
           socialItemObj.title = ''
           socialItemObj.description = twitterItem.text
-          socialItemObj.published = moment(twitterItem.created_at, 'ddd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YYYY HH:mm:ss')
+          socialItemObj.published = postingDate.format('DD/MM/YYYY HH:mm:ss')
+          socialItemObj.postAge = Math.round(duration.asDays())
           socialItemObj.source = "twitter"
-          //TODO: Add Thumb Info
+
+          
+          if(twitterItem.entities.media){
+            socialItemObj.image = twitterItem.entities.media[0].media_url_https
+          }else{
+            socialItemObj.image = ''
+          }
 
           this.postArray.push(socialItemObj)
         })
@@ -166,5 +181,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+  .social-list{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
