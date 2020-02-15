@@ -1,6 +1,6 @@
 <template>
   <div class="social-list">
-    <card v-for="post in postArray" :key="post.title" :card-data=post ></card>
+    <card v-for="post in postArray" :key="post.id" :card-data=post ></card>
   </div>
 </template>
 
@@ -46,7 +46,8 @@ export default {
            
           itemArray.forEach(item => {
             let socialItemObj = {}
-
+            
+            socialItemObj.id = item.id
             socialItemObj.title = item.snippet.title
             socialItemObj.description = item.snippet.description
             socialItemObj.published = moment(item.snippet.publishedAt).format('DD/MM/YYYY HH:mm:ss')
@@ -63,7 +64,8 @@ export default {
 
         TwitterData.forEach(twitterItem => {
           let socialItemObj = {}
-
+          
+          socialItemObj.id = twiterItem.id
           socialItemObj.title = ''
           socialItemObj.description = twitterItem.text
           socialItemObj.published = moment(twitterItem.created_at, 'ddd MMM DD HH:mm:ss ZZ YYYY').format('DD/MM/YYYY HH:mm:ss')
@@ -73,49 +75,50 @@ export default {
           this.postArray.push(socialItemObj)
         })
       
-        this.postArray.sort((a,b) => {
+      this.postArray.sort((a,b) => {
 
-            var dateA, dateB
+          var dateA, dateB
 
-            switch(a.source){
-              case 'twitter':
-                dateA = moment(a.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
-              break;
-              case 'youTube':
-                dateA = moment(a.published)
-              break;
-              default:
-                dateA = a.published
-            }
+          switch(a.source){
+            case 'twitter':
+              dateA = moment(a.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
+            break;
+            case 'youTube':
+              dateA = moment(a.published)
+            break;
+            default:
+              dateA = a.published
+          }
 
-            switch(b.source){
-              case 'twitter':
-                dateB = moment(b.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
-              break;
-              case 'youTube':
-                dateB = moment(b.published)
-              break;
-              default:
-                dateB = b.published
-            }
+          switch(b.source){
+            case 'twitter':
+              dateB = moment(b.published, 'ddd MMM DD HH:mm:ss ZZ YYYY')
+            break;
+            case 'youTube':
+              dateB = moment(b.published)
+            break;
+            default:
+              dateB = b.published
+          }
 
-            if(dateA < dateB){
-              return -1;
-            }
+          if(dateA < dateB){
+            return -1;
+          }
 
-            if (dateA > dateB) {
-              return 1;
-            }
+          if (dateA > dateB) {
+            return 1;
+          }
 
-            return 0;
-        })
+          return 0;
+      })
 
       /*
       Benching this for now, this should be called to refresh the Bearer Token incase it has been invalidadted and the timeline called with the reurned token, This works in Postman 
-      but I get a CORS preflight from the browser. I'm sure this is fixable but for the sake of time I'm moving on.
+      but I get a CORS preflight from the browser. I'm sure this is fixable but for the sake of time I'm moving on,
+      and using a response obtained from postman and assigned to a js const in src/assets/twitterData.js.
       */
 
-     /*
+      /*
       let twitterTokenUrl = new URL('https://api.twitter.com/oauth2/token')
       twitterTokenUrl.searchParams.set('grant_type','client_credentials')
       const config = {
@@ -156,7 +159,7 @@ export default {
         .catch(error => {
           console.log(error)
         })
-    */
+      */
     }
   },
 }
