@@ -101,8 +101,6 @@ export default {
             case 'youTube':
               dateA = moment(a.published)
             break;
-            default:
-              dateA = a.published
           }
 
           switch(b.source){
@@ -112,15 +110,13 @@ export default {
             case 'youTube':
               dateB = moment(b.published)
             break;
-            default:
-              dateB = b.published
           }
 
-          if(dateA < dateB){
+          if(dateB.isBefore(dateA)){
             return -1;
           }
 
-          if (dateA > dateB) {
+          if (dateA.isAfter(dateB)){
             return 1;
           }
 
