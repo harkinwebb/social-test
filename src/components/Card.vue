@@ -1,7 +1,9 @@
 <template>
   <div class="card">
-    <div class="card-thumb">
-      <img v-bind:src="cardData.image" v-if="cardData.image != ''"/>
+    <div class="card-thumb" v-if="cardData.image != ''">
+      <img v-bind:src="cardData.image" />
+    </div>
+    <div class="card-thumb-spacer" v-else>
     </div>
     <div class="card-detail">
       <h3 class="post-title">{{cardData.title}}</h3>
@@ -36,6 +38,11 @@ export default {
 <style scoped lang="scss">
   .card{
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   .card-thumb{
@@ -58,10 +65,20 @@ export default {
     }
   }
 
+  .card-thumb-spacer{
+    width: 20%;
+    display:inline-block;
+    margin-right: 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
   .card-detail{
     width: 78%;
     display:inline-block;
-
+    h3{
+      margin-top: 0px;
+    }
   }
 
   .twitter-icon{
