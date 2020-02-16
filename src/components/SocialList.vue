@@ -1,11 +1,13 @@
 <template>
   <div class="social-list">
+    <error-msg v-if="hasErrors == true" :error-msg=errorText></error-msg>
     <card v-for="post in postArray" :key="post.id" :card-data=post ></card>
   </div>
 </template>
 
 <script>
 import Card from '@/components/Card.vue'
+import ErrorMsg from '@/components/ErrorMsg.vue'
 import TwitterData from '@/assets/twitterData'
 import axios from 'axios' 
 import moment from 'moment'
@@ -13,15 +15,15 @@ import moment from 'moment'
 export default {
   name: 'SocialList',
   components: {
-    Card
-  },
-  props: {
-    msg: String
+    Card,
+    ErrorMsg
   },
   data: function(){
       return{
         loaded: false,
         postArray: [],
+        hasErrors: false,
+        errorText: ''
       }
   },
   mounted(){
@@ -38,7 +40,7 @@ export default {
       youTubeUrl.searchParams.set('part','snippet')
       youTubeUrl.searchParams.set('channelId','UCGkRPUvp4tZXyd4EZUdjrCw')
       youTubeUrl.searchParams.set('key','AIzaSyC6H-od890sW_0HxzNqjo3fY3cCQhEcR6Y')
-
+      
       axios
         .get(youTubeUrl.href)
         .then(response => {
@@ -60,9 +62,10 @@ export default {
 
             this.postArray.push(socialItemObj)
           })
-          
         })
         .catch(error => {
+          this.hasErrors = true
+          this.errorText = 'YouTube feed failed to load correctly'
           console.log(error)
         })
 
